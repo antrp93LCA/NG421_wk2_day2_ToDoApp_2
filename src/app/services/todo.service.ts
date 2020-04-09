@@ -7,12 +7,20 @@ import { ITodo } from '../interfaces/itodo';
 export class TodoService {
 
   todoList: ITodo[] = [];
+  todoId: number;
+  todoTitle: string;
+  description: string;
   
   
   constructor() { }
 
-  serviceAddTodo(todo: ITodo) {
-    this.todoList.push(todo);
+  serviceAddTodo(todoTitle: string) {
+    this.todoList.push({
+      id: this.todoId,
+      title: todoTitle,
+      description: ''
+    });
+    this.todoId++
   }
 
   serviceDeleteTodo(todo: ITodo) {
