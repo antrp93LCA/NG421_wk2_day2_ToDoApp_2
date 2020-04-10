@@ -21,8 +21,8 @@ export class TodoComponent implements OnInit {
   }
 
 
-  deleteTodo(todo: ITodo) {
-    this.todoService.serviceDeleteTodo(todo);
+  deleteTodo() {
+    this.todoService.serviceDeleteTodo(this.todo);
   }
 
 
