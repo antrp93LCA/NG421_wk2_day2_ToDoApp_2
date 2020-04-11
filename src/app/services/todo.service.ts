@@ -1,42 +1,44 @@
-import { Injectable } from '@angular/core';
-import { ITodo } from '../interfaces/itodo';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { Injectable } from "@angular/core";
+import { ITodo } from "../interfaces/itodo";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ConfirmationModalComponent } from "../confirmation-modal/confirmation-modal.component";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TodoService {
-
   todoList: ITodo[] = [];
   todoId: number;
   todoTitle: string;
   description: string;
-  
-  
-  constructor(private modalService: NgbModal) { }
+
+  constructor(private modalService: NgbModal) {}
 
   serviceAddTodo(todoTitle: string) {
     this.todoList.push({
       id: this.todoId,
       title: todoTitle,
-      description: ''
+      description: "",
     });
-    this.todoId++
+    this.todoId++;
   }
 
-  serviceDeleteTodo(todo: ITodo) {
-
+  async serviceDeleteTodo(todo: ITodo) {
     //show
-    this.modalService.open(ConfirmationModalComponent);
+    const modal = this.modalService.open(ConfirmationModalComponent);
+    const component: ConfirmationModalComponent = modal.componentInstance;
+    component.modalInstance = modal;
+
+    const result = await modal.result;
+
     //if the result is yes
-    const index = this.todoList.findIndex(todoItem => todoItem === todo);
-    this.todoList.splice(index, 1);
+    if (result === "yes") {
+      const index = this.todoList.findIndex((todoItem) => todoItem === todo);
+      this.todoList.splice(index, 1);
+    }
   }
 
-  serviceGetTodos(){
+  serviceGetTodos() {
     return this.todoList;
   }
-
-
 }
